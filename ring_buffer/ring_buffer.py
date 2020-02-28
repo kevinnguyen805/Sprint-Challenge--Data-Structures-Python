@@ -6,20 +6,40 @@ class RingBuffer:
         self.capacity = capacity
         self.current = None
         self.storage = DoublyLinkedList()
-        self.cache = []
+        # self.cache = []
 
     def append(self, item):
-        if self.storage.length >= self.capacity:
-            value = self.cache[0]
-            current_value = self.storage.head 
-            while current_value.value is not value:
-                current_value = current_value.next 
-            current_value.value = item 
-            self.cache = self.cache[1:]
-            self.cache.append(item)
-        else: 
+        if self.current is None:
+            self.current = self.storage.head 
+
+        if self.storage.length >= self.capacity: 
+            if self.current == self.storage.head:
+                self.storage.remove_from_head()
+                self.storage.add_to_head(item)
+                self.current = self.current.next 
+            elif self.current == self.storage.tail:
+                self.storage.remove_from_tail()
+                self.storage.add_to_tail(item)
+                self.current = self.storage.head 
+            else: 
+                self.current.insert_before(item)
+                temp = self.current.next 
+                self.storage.delete(self.current)
+                self.current = temp
+                self.storage.length += 1 
+        else:
             self.storage.add_to_tail(item)
-            self.cache.append(item)
+        # if self.storage.length >= self.capacity:
+        #     value = self.cache[0]
+        #     current_value = self.storage.head 
+        #     while current_value.value is not value:
+        #         current_value = current_value.next 
+        #     current_value.value = item 
+        #     self.cache = self.cache[1:]
+        #     self.cache.append(item)
+        # else: 
+        #     self.storage.add_to_tail(item)
+        #     self.cache.append(item)
 
 
     def get(self):
