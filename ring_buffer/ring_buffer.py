@@ -9,7 +9,6 @@ class RingBuffer:
         self.cache = []
 
     def append(self, item):
-        # print(self.storage.length)
         if self.storage.length >= self.capacity:
             value = self.cache[0]
             current_value = self.storage.head 

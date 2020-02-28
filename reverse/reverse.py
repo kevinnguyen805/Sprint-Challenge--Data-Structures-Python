@@ -49,10 +49,10 @@ class LinkedList:
     previous = None
     current = self.head
 
-    while current is not None:
+    while current != None:
         new = current.next_node 
         current.next_node = previous 
         previous = current 
         current = new
 
-    return current
+    self.head = previous
